@@ -40,4 +40,51 @@ contract Orange is ERC20 {
             publicSale: (TOTAL_SUPPLY * 25) / 100
         });
     }
+    /**
+     * @dev read methods for getting tokenAllocation details
+     */
+
+    function getTeamAllocation() public returns (uint256) {
+        return token_allocatios.team;
+    }
+
+    function getAdvisorAllocation() public returns (uint256) {
+        return token_allocatios.advisor;
+    }
+
+    function getLiquidityAllocation() public returns (uint256) {
+        return token_allocatios.liquidity;
+    }
+
+    function getEcosystemAllocation() public returns (uint256) {
+        return token_allocatios.ecosystemReward;
+    }
+
+    function getCommunityAirdropAllocation() public returns (uint256) {
+        return token_allocatios.communityAirDrop;
+    }
+
+    function getGrantsAllocation() public returns (uint256) {
+        return token_allocatios.grants;
+    }
+
+    function getStakingRewardAllocation() public returns (uint256) {
+        return token_allocatios.stakingReward;
+    }
+
+    function getEarlyInvestorsAllocation() public returns (uint256) {
+        return token_allocatios.earlyInvestors;
+    }
+
+    function getPrivateSale1Allocation() public returns (uint256) {
+        return token_allocatios.privateSale1;
+    }
+
+    function getPrivateSale2Allocation() public returns (uint256) {
+        return token_allocatios.privateSale2;
+    }
+
+    function getPublicSaleAllocation() public returns (uint256) {
+        return token_allocatios.publicSale;
+    }
 }
