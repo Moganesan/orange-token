@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract Orange is ERC20 {
-    uint24 public constant TOTAL_SUPPLY = 100_000_000 * 10 ** 18;
+    uint256 public constant TOTAL_SUPPLY = 100_000_000 * 10 ** 18;
     struct TokenAllocation {
         uint256 team;
         uint256 advisor;
@@ -27,10 +27,10 @@ contract Orange is ERC20 {
             team: (TOTAL_SUPPLY * 10) / 100,
             advisor: (TOTAL_SUPPLY * 3) / 100,
             liquidity: (TOTAL_SUPPLY * 27) / 100,
-            ecosystemRewards: (TOTAL_SUPPLY * 5) / 100,
+            ecosystemReward: (TOTAL_SUPPLY * 5) / 100,
             communityAirDrop: (TOTAL_SUPPLY * 2) / 100,
             grants: (TOTAL_SUPPLY * 3) / 100,
-            stakingRewards: (TOTAL_SUPPLY * 5) / 100,
+            stakingReward: (TOTAL_SUPPLY * 5) / 100,
             earlyInvestors: (TOTAL_SUPPLY * 5) / 100,
             privateSale1: (TOTAL_SUPPLY * 9) / 100,
             privateSale2: (TOTAL_SUPPLY * 6) / 100,
