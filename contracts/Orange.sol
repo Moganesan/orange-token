@@ -1,10 +1,12 @@
 // SPDX-License-Identifier : MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.19;
 
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract Orange is ERC20 {
     uint256 public constant TOTAL_SUPPLY = 100_000_000 * 10 ** 18;
+    uint256 public vestingStartedTime;
+
     struct TokenAllocation {
         uint256 team;
         uint256 advisor;
@@ -23,6 +25,7 @@ contract Orange is ERC20 {
 
     constructor() ERC20("ORANGE", "ORG") {
         _mint(msg.sender, TOTAL_SUPPLY);
+        vestingStartedTime = block.timestamp;
         token_allocatios = TokenAllocation({
             team: (TOTAL_SUPPLY * 10) / 100,
             advisor: (TOTAL_SUPPLY * 3) / 100,
