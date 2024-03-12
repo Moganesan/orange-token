@@ -12,7 +12,6 @@ contract Vesting {
     uint256 vestingStartTime;
 
     struct VestingDetails {
-        uint256 releasePercentage;
         uint256 lastReleaseTime;
         uint256 totalReleased;
     }
@@ -34,7 +33,15 @@ contract Vesting {
     }
 
     function claimTeamToken(address _receiver) public onlyTokenOwner {
-        teamMemberVestingDetails[_receiver].releasePercentage = 5;
+        // total allocation for team
+        uint256 allocatedTokens = (token.getTotalSupply() *
+            token.getTeamAllocation()) / 100;
+
+        // check that token allocation for team is available
+        require(
+            allocatedTokens < teamMemberVestingDetails[_receiver].totalReleased,
+            "Team Tokens Closed!"
+        );
 
         // calculate the number of release period that have passed
         uint256 elapsedPeriods = (block.timestamp - vestingStartTime) /
@@ -42,15 +49,6 @@ contract Vesting {
 
         // calculate total vested percentage
         uint256 totalVestedPercentage = elapsedPeriods * 5;
-
-        // total allocation for team
-        uint256 allocatedTokens = (token.getTotalSupply() *
-            token.getTeamAllocation()) / 100;
-
-        require(
-            allocatedTokens < teamMemberVestingDetails[_receiver].totalReleased,
-            "Team Tokens Closed!"
-        );
 
         // calculate the tokens to release
         uint256 tokensToRelease = (allocatedTokens * totalVestedPercentage) /
