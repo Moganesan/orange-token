@@ -44,6 +44,14 @@ contract Orange is ERC20 {
     }
 
     /**
+     * @dev read token total supply
+     */
+
+    function getTotalSupply() public view returns (uint256) {
+        return totalSupply();
+    }
+
+    /**
      * @dev read token deployer address
      */
 
