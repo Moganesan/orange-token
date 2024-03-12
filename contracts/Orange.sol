@@ -52,6 +52,14 @@ contract Orange is ERC20 {
     }
 
     /**
+     * @dev read vesting start time
+     */
+
+    function getVestingStartTime() public view returns (uint256) {
+        return vestingStartedTime;
+    }
+
+    /**
      * @dev read methods for getting tokenAllocation details
      */
 
