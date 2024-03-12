@@ -33,33 +33,30 @@ contract Vesting {
         _;
     }
 
-    function claimTeamToken() public onlyTokenOwner {
-        VestingDetails memory vestingDetails = teamMemberVestingDetails[
-            msg.sender
-        ];
+    function claimTeamToken(address _receiver) public onlyTokenOwner {
+        teamMemberVestingDetails[_receiver].releasePercentage = 5;
 
-        if (vestingDetails.totalReleased == 0) {
-            teamMemberVestingDetails[msg.sender].releasePercentage = 5;
+        // calculate the number of release period that have passed
+        uint256 elapsedPeriods = (block.timestamp - vestingStartTime) /
+            releaseInterval;
 
-            // calculate the number of release period that have passed
-            uint256 elapsedPeriods = block.timestamp -
-                vestingStartTime /
-                releaseInterval;
+        // calculate total vested percentage
+        uint256 totalVestedPercentage = elapsedPeriods * 5;
 
-            // calculate total vested percentage
-            uint256 totalVestedPercentage = elapsedPeriods * 5;
+        // total allocation for team
+        uint256 allocatedTokens = (token.getTotalSupply() *
+            token.getTeamAllocation()) / 100;
 
-            // total allocation for team
-            uint256 allocatedTokens = (token.getTotalSupply() *
-                token.getTeamAllocation()) / 100;
+        // calculate the tokens to release
+        uint256 tokensToRelease = (allocatedTokens * totalVestedPercentage) /
+            100;
 
-            // calculate the tokens to release
-            uint256 tokensToRelease = (allocatedTokens *
-                totalVestedPercentage) / 100;
+        token.transferFrom(address(this), _receiver, tokensToRelease);
 
-            token.transferFrom(address(this), msg.sender, tokensToRelease);
+        teamMemberVestingDetails[_receiver].lastReleaseTime = block.timestamp;
 
-            emit tokenClaim(msg.sender, tokensToRelease, block.timestamp);
-        }
+        teamMemberVestingDetails[_receiver].totalReleased = tokensToRelease;
+
+        emit tokenClaim(_receiver, tokensToRelease, block.timestamp);
     }
 }
