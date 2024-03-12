@@ -17,6 +17,8 @@ contract Vesting {
         uint256 totalReleased;
     }
 
+    event tokenClaim(address receiver, uint256 amount, uint256 timestamp);
+
     mapping(address => VestingDetails) teamMemberVestingDetails;
 
     constructor(address _token, uint256 _releaseInterval) {
@@ -55,7 +57,9 @@ contract Vesting {
             uint256 tokensToRelease = (allocatedTokens *
                 totalVestedPercentage) / 100;
 
-            token.transfer(msg.sender, tokensToRelease);
+            token.transferFrom(address(this), msg.sender, tokensToRelease);
+
+            emit tokenClaim(msg.sender, tokensToRelease, block.timestamp);
         }
     }
 }
