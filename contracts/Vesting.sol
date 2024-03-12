@@ -47,6 +47,11 @@ contract Vesting {
         uint256 allocatedTokens = (token.getTotalSupply() *
             token.getTeamAllocation()) / 100;
 
+        require(
+            allocatedTokens < teamMemberVestingDetails[_receiver].totalReleased,
+            "Team Tokens Closed!"
+        );
+
         // calculate the tokens to release
         uint256 tokensToRelease = (allocatedTokens * totalVestedPercentage) /
             100;
