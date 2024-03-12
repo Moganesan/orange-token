@@ -6,6 +6,7 @@ import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 contract Orange is ERC20 {
     uint256 public constant TOTAL_SUPPLY = 100_000_000 * 10 ** 18;
     uint256 public vestingStartedTime;
+    address public owner;
 
     struct TokenAllocation {
         uint256 team;
@@ -26,6 +27,7 @@ contract Orange is ERC20 {
     constructor() ERC20("ORANGE", "ORG") {
         _mint(msg.sender, TOTAL_SUPPLY);
         vestingStartedTime = block.timestamp;
+        owner = msg.sender;
         token_allocatios = TokenAllocation({
             team: (TOTAL_SUPPLY * 10) / 100,
             advisor: (TOTAL_SUPPLY * 3) / 100,
@@ -40,51 +42,60 @@ contract Orange is ERC20 {
             publicSale: (TOTAL_SUPPLY * 25) / 100
         });
     }
+
+    /**
+     * @dev read token deployer address
+     */
+
+    function getOwner() public view returns (address) {
+        return owner;
+    }
+
     /**
      * @dev read methods for getting tokenAllocation details
      */
 
-    function getTeamAllocation() public returns (uint256) {
+    function getTeamAllocation() public view returns (uint256) {
         return token_allocatios.team;
     }
 
-    function getAdvisorAllocation() public returns (uint256) {
+    function getAdvisorAllocation() public view returns (uint256) {
         return token_allocatios.advisor;
     }
 
-    function getLiquidityAllocation() public returns (uint256) {
+    function getLiquidityAllocation() public view returns (uint256) {
         return token_allocatios.liquidity;
     }
 
-    function getEcosystemAllocation() public returns (uint256) {
+    function getEcosystemAllocation() public view returns (uint256) {
         return token_allocatios.ecosystemReward;
     }
 
-    function getCommunityAirdropAllocation() public returns (uint256) {
+    function getCommunityAirdropAllocation() public view returns (uint256) {
         return token_allocatios.communityAirDrop;
     }
 
-    function getGrantsAllocation() public returns (uint256) {
+    function getGrantsAllocation() public view returns (uint256) {
         return token_allocatios.grants;
     }
 
-    function getStakingRewardAllocation() public returns (uint256) {
+    function getStakingRewardAllocation() public view returns (uint256) {
         return token_allocatios.stakingReward;
     }
 
-    function getEarlyInvestorsAllocation() public returns (uint256) {
+    function getEarlyInvestorsAllocation() public view returns (uint256) {
         return token_allocatios.earlyInvestors;
     }
 
-    function getPrivateSale1Allocation() public returns (uint256) {
+    function getPrivateSale1Allocation() public view returns (uint256) {
         return token_allocatios.privateSale1;
     }
 
-    function getPrivateSale2Allocation() public returns (uint256) {
+    function getPrivateSale2Allocation() public view returns (uint256) {
         return token_allocatios.privateSale2;
     }
 
-    function getPublicSaleAllocation() public returns (uint256) {
+    function getPublicSaleAllocation() public view returns (uint256) {
         return token_allocatios.publicSale;
     }
 }
