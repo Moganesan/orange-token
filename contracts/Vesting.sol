@@ -11,6 +11,8 @@ contract Vesting {
     uint256 releaseInterval;
     uint256 vestingStartTime;
 
+    mapping(string => uint256) tokenAllocation;
+
     struct VestingDetails {
         uint256 lastReleaseTime;
         uint256 totalReleased;
@@ -24,7 +26,15 @@ contract Vesting {
         token = Orange(_token);
         owner = token.getOwner();
         releaseInterval = _releaseInterval;
+
         vestingStartTime = token.getVestingStartTime();
+
+        tokenAllocation["TEAM"] = token.getTeamAllocation();
+        tokenAllocation["ADVISORS"] = token.getAdvisorAllocation();
+        tokenAllocation["LIQUIDITY"] = token.getLiquidityAllocation();
+        tokenAllocation["ECOSYSTEM_REWARDS"] = token.getEcosystemAllocation();
+        tokenAllocation["COMMUNITY_AIRDROP"] = token
+            .getCommunityAirdropAllocation();
     }
 
     modifier onlyTokenOwner() {
@@ -32,12 +42,15 @@ contract Vesting {
         _;
     }
 
-    function claimTeamToken(address _receiver) public onlyTokenOwner {
-        // total allocation for team
+    function claimToken(
+        string memory area,
+        address _receiver
+    ) public onlyTokenOwner {
+        // total allocation
         uint256 allocatedTokens = (token.getTotalSupply() *
-            token.getTeamAllocation()) / 100;
+            tokenAllocation[area]) / 100;
 
-        // check that token allocation for team is available
+        // check that token allocation is available
         require(
             allocatedTokens < teamMemberVestingDetails[_receiver].totalReleased,
             "Team Tokens Closed!"
